@@ -1,4 +1,4 @@
-//Auth Service
+/*****Auth Service*****/
 //see appwrite doc for auth for below methods
 
 import conf from '../conf/conf.js'
@@ -54,7 +54,7 @@ export class AuthService {
 
   async logout(){
     try {
-      return await this.account.deleteSessions();
+      return await this.account.deleteSessions();  //delete all sessions of logged user
     } 
     catch (error) {
         console.log("Appwrite Service :: logout :: error", error);
@@ -64,4 +64,4 @@ export class AuthService {
 
 const authService = new AuthService();
 
-export default authService;
+export default authService;   //exporting object not class bcz eveytime we dont need to create object
