@@ -107,7 +107,6 @@ export class Service{
 
 
   //2)storage service (file upload services)
-
   async uploadFile(file){  //argument as whole file(not just filename)
     try {
         return await this.bucket.createFile(
