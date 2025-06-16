@@ -6,7 +6,7 @@ import {login, logout} from './store/authSlice'
 import { Footer, Header } from './components'
 
 function App() {
-  //create loading bcz some time needed to fetch data fro appwrite
+  //create loading bcz some time need to fetch data fro appwrite
   const [loading, setLoading] = useState(true)  //initially loading is true
   const dispatch = useDispatch()  //getting current user from store
 
@@ -15,7 +15,7 @@ function App() {
     authService.getCurrentUser()
     .then((userData) => {
       if(userData){
-        dispatch(login({userData}))
+        dispatch(login({userData}))  //write directly {userData} bcz in authSlice file has same name userData
       }
       else{
         dispatch(logout())  //if no userData then logout
