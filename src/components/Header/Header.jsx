@@ -9,7 +9,9 @@ function Header() {
   const authStatus = useSelector((state) => state.auth.status)
   const navigate = useNavigate()
 
-  const naItems = [
+  //things to shows on header
+  //why created like this?(just production grade things. Makes easy to future updates)
+  const navItems = [
     {
       name: 'Home',
       slug: "/",
@@ -18,7 +20,7 @@ function Header() {
     {
       name: "Login",
       slug: "/login",
-      active: !authStatus  //bcz if user is loggen in then do not show login & signup button
+      active: !authStatus  //bcz if user is logged in then do not show login & signup button
     },
     {
       name: "Signup",
@@ -38,7 +40,35 @@ function Header() {
   ]
 
   return (
-    <header></header>
+    <header className='py-3 shadow bg-gray-500'>
+      <Container>
+        <nav className='flex'>
+          <div className='mr-4'>
+            <Link to='/'>
+              <Logo width='70px'/>
+            </Link>
+          </div>
+          <ul className='flex ml-auto'>
+            {navItems.map((item) => 
+              item.active ? (
+                <li key={item.name}>  
+                  <button 
+                    onClick={() => navigate(item.slug)} 
+                    className='inline-block px-6 py-2 duration-200 hover:bg-blue-100 rounded-full'>
+                    {item.name}
+                  </button>
+                </li>
+              ) : null )}
+
+              {authStatus && (
+                <li>
+                  <LogoutBtn />
+                </li>
+              )}
+          </ul>
+        </nav>
+      </Container>
+    </header>
   )
 }
 
