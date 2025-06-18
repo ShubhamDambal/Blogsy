@@ -1,11 +1,11 @@
 import React, {useId} from 'react'
 
 const Input = React.forwardRef(function Input({
-  lable,
-  type = "text",
-  className = '',
-  ...props
-}, ref){
+    lable,
+    type = "text",
+    className = '',
+    ...props
+  }, ref){
 
   const id = useId()  //for generating unique id's
   return (
