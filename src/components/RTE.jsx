@@ -15,7 +15,7 @@ function RTE({name, control, label, defaultValue=""}) {
 
           <Editor 
             initialValue={defaultValue}
-            init={{
+            init={{  //editor has features after initialization
               initialValue: defaultValue,
               height: 500,
               menubar: true,
