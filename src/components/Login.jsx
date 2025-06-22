@@ -59,7 +59,7 @@ function Login() {
               label="Email: "
               placeholder="Enter your email"
               type="email"
-              {...register("email", {
+              {...register("email", {   //register automatically passes {ref}
                 required: true,
                 validate: {
                   matchPattern: (value) =>  /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) ||
@@ -67,7 +67,7 @@ function Login() {
                 }
               })}
             />
-
+ 
             {/*Password*/}
             <Input 
               label="Password: "

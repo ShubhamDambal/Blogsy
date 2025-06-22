@@ -4,7 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 //initial state
 const initialState = {  
-  status: false,   //initially status is false(post is inactive)
+  status: false,   //initially status is false(user logged out)
   userData: null   //and there is no user
 }
 

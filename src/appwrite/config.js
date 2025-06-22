@@ -16,7 +16,7 @@ export class Service{
     this.bucket = new Storage(this.client);
   }
 
-  //1)database service
+  //1)database service (For structured data json)
   //we are creating slug as document_id
   async createPost({title, slug, content, featuredImage, status, userId}){
     try {
@@ -106,7 +106,7 @@ export class Service{
   }
 
 
-  //2)storage service (file upload services)
+  //2)storage service (file upload services)(For unstructured Data like Images)
   async uploadFile(file){  //argument as whole file(not just filename)
     try {
         return await this.bucket.createFile(

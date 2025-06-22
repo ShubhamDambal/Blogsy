@@ -64,7 +64,7 @@ function PostForm({post}) {
       return value
         .trim()
         .toLowerCase()
-        .replace(/\s/g, '-') /*/__/g =changeglobally*/
+        .replace(/\s/g, '-') /*/__/g =checkglobally*/
     }
     else{
       return ''
@@ -97,7 +97,7 @@ function PostForm({post}) {
             placeholder="Slug"
             className="mb-4"
             {...register("slug", { required: true })}
-            onInput={(e) => {
+            onInput={(e) => {  //automatically gets filled
                 setValue("slug", slugTransform(e.currentTarget.value), { shouldValidate: true });
             }}
         />

@@ -1,3 +1,5 @@
+//This is common style for applying where this kind of style is required.
+
 import React from 'react'
 
 function Container({children}) {
