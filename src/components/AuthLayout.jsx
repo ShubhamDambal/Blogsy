@@ -9,10 +9,11 @@ function Protected({children, authentication = true}) {
 
   //protection conditions/mechanisms
   useEffect(() => {
-    if(authentication && authStatus !== authentication){
+    //authentication = true(login required), authentication = false(already logged in no login required)
+    if(authentication && authStatus !== authentication){  //
       navigate("/login")
     }
-    else if(!authentication && authStatus !== authentication){
+    else if(!authentication && authStatus !== authentication){   //user already logged in
       navigate("/")
     }
     setLoader(false)
