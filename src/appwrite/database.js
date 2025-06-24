@@ -1,8 +1,8 @@
 /*****database & storage Service*****/
 import conf from '../conf/conf.js'
-import { Client, ID, Databases, Storage, Query } from "appwrite";
+import { Client,  Databases, Query } from "appwrite";
 
-export class Service{
+export class DBService{
   client = new Client();
   databases;
   bucket;
@@ -13,7 +13,6 @@ export class Service{
       .setProject(conf.appwriteProjectId);
 
     this.databases = new Databases(this.client);
-    this.bucket = new Storage(this.client);
   }
 
   //1)database service (For structured data json)
@@ -105,45 +104,7 @@ export class Service{
     }
   }
 
-
-  //2)storage service (file upload services)(For unstructured Data like Images)
-  async uploadFile(file){  //argument as whole file(not just filename)
-    try {
-        return await this.bucket.createFile(
-          conf.appwriteBucketId,
-          ID.unique(),  //stored as fileId
-          file
-        )
-    } 
-    catch (error) {
-        console.log("Appwrite Service :: uploadFile :: error", error);
-        return false;
-    }
-  }
-
-  async deleteFile(fileId){
-    try {
-        await this.bucket.deleteFile(
-          conf.appwriteBucketId,
-          fileId
-        )
-        return true;
-    } 
-    catch (error) {
-        console.log("Appwrite Service :: deleteFile :: error", error);
-        return false;
-    }
-  }
-
-  //not making async bcz this func does not return promise
-  getFileView(fileId){
-    return this.bucket.getFileView(
-      conf.appwriteBucketId,
-      fileId
-    )
-  }
-
 }
 
-const service = new Service();
-export default service;
+const dbService = new DBService();
+export default dbService;

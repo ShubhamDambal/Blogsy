@@ -2,7 +2,8 @@
 
 import React, {useEffect, useState} from 'react'
 import { Link, useNavigate, useParams } from "react-router-dom";
-import appwriteService from "../appwrite/config";
+import dbService from "../appwrite/database";
+import storageService from "../appwrite/storage";
 import { Button, Container } from "../components";
 import parse from "html-react-parser";
 import { useSelector } from "react-redux";
@@ -16,7 +17,7 @@ function Post() {
 
   useEffect(() => {
     if (slug) {
-      appwriteService.getPost(slug).then((post) => {
+      dbService.getPost(slug).then((post) => {
         if (post) setPost(post);
         else navigate("/");
       });
@@ -29,9 +30,9 @@ function Post() {
   const isAuthor = post && userData ? post.userId === userData.$id : false;  //check user is author or not. If author then give access to delete & edit post
 
   const deletePost = () => {
-    appwriteService.deletePost(post.$id).then((status) => {  //deletePost returns true if post gets deleted
+    dbService.deletePost(post.$id).then((status) => {  //deletePost returns true if post gets deleted
       if (status) {
-        appwriteService.deleteFile(post.featuredImage);  //if post deleted then remove corresponding image from storage
+        storageService.deleteFile(post.featuredImage);  //if post deleted then remove corresponding image from storage
         navigate("/");
       }
     });
@@ -42,7 +43,7 @@ function Post() {
       <Container>
         <div className="w-full flex justify-center mb-4 relative border rounded-xl p-2">
           <img
-            src={appwriteService.getFileView(post.featuredImage)}
+            src={storageService.getFileView(post.featuredImage)}
             alt={post.title}
             className="rounded-xl"
           />

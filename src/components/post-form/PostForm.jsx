@@ -1,7 +1,8 @@
 import React, {useCallback, useEffect} from 'react'
 import { useForm } from 'react-hook-form'
 import {Button, Input, Select, RTE} from '../index'
-import appwriteService from "../../appwrite/config"
+import dbService from "../../appwrite/database"
+import storageService from "../../appwrite/storage"
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
@@ -24,15 +25,15 @@ function PostForm({post}) {
     console.log("Form data:", data);
     //post already present
     if(post){
-      const file = data.image?.[0] ? await appwriteService.uploadFile(data.image[0]) : null   //taking image from storage
+      const file = data.image?.[0] ? await storageService.uploadFile(data.image[0]) : null   //taking image from storage
 
       if(file){
         //delete prev post image from storage
-        appwriteService.deleteFile(post.featuredImage)
+        storageService.deleteFile(post.featuredImage)
       }
 
       //update post
-      const dbPost = await appwriteService.updatePost(post.$id, {
+      const dbPost = await dbService.updatePost(post.$id, {
         ...data,   //rest data
         featuredImage: file ? file.$id : undefined
       })
@@ -42,12 +43,12 @@ function PostForm({post}) {
       }
     }
     else{//post not exist
-      const file = await appwriteService.uploadFile(data.image[0])
+      const file = await storageService.uploadFile(data.image[0])
 
       if(file){
         const fileId = file.$id
         data.featuredImage = fileId
-        const dbPost = await appwriteService.createPost({  //while creating post passing data like this not just like (data). when forms will form then we don't have access to userId
+        const dbPost = await dbService.createPost({  //while creating post passing data like this not just like (data). when forms will form then we don't have access to userId
           ...data,
           userId: userData.$id
         })
@@ -114,9 +115,9 @@ function PostForm({post}) {
         />
         {post && post.featuredImage && (
             <div className="w-full mb-4">
-                {console.log("Image Preview URL", appwriteService.getFileView(post.featuredImage))}
+                {console.log("Image Preview URL", storageService.getFileView(post.featuredImage))}
                 <img
-                    src={appwriteService.getFileView(post.featuredImage)}
+                    src={storageService.getFileView(post.featuredImage)}
                     alt={post.title}
                     className="rounded-lg"
                 />
