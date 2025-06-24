@@ -14,6 +14,7 @@ function RTE({name, control, label, defaultValue=""}) {
         render={({field: {onChange}}) => (  //render condition(onChange) & what to render(Editor)
 
           <Editor 
+            apiKey="z7u6bjx3lt7uk4gc42zc23t7g2bg4xdgc2xnf0k8viv7ooyi"
             initialValue={defaultValue}
             init={{  //editor has features after initialization
               initialValue: defaultValue,

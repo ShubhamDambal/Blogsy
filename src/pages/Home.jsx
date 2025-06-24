@@ -8,10 +8,11 @@ function Home() {
   useEffect(() => {
     appwriteService.getPosts().then((posts) => {
       if(posts){
-        setPosts(posts)
+        setPosts(posts.documents)
       }
     })
   }, [])
+
 
   if(posts.length === 0){
     return (
@@ -20,7 +21,7 @@ function Home() {
           <div className="flex flex-wrap">
             <div className="p-2 w-full">
               <h1 className="text-2xl font-bold hover:text-gray-500">
-                  Login to read posts
+                  No posts
               </h1>
             </div>
           </div>
@@ -35,7 +36,7 @@ function Home() {
           {posts.map((post) => {
             <div key={post.$id} className='p-2 w-1/4'>
               <PostCard {...post} />
-              {/*OR  <PostCard post={post} />*/}
+              {/*need to destructure bcz we're getting arguments in this way*/}
             </div>
           })}
         </div>

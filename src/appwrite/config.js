@@ -136,8 +136,8 @@ export class Service{
   }
 
   //not making async bcz this func does not return promise
-  getFilePreview(fileId){
-    return this.bucket.getFilePreview(
+  getFileView(fileId){
+    return this.bucket.getFileView(
       conf.appwriteBucketId,
       fileId
     )

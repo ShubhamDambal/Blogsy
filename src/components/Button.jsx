@@ -9,7 +9,7 @@ function Button({
   ...props  //spread more props which user can pass
 }) {
   return (
-    <button className={`px-4 py-2 rounded-lg ${bgColor} ${textColor} ${className}`} {...props}>
+    <button onClick={() => {console.log("clicked!!")}} className={`px-4 py-2 rounded-lg ${bgColor} ${textColor} ${className}`} {...props}>
       {children}
     </button>
   )

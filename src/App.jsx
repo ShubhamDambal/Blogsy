@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux'
 import authService from './appwrite/auth'
 import {login, logout} from './store/authSlice'
 import { Footer, Header } from './components'
+import { Outlet } from 'react-router-dom'
 
 function App() {
   //create loading bcz some time need to fetch data fro appwrite
@@ -30,8 +31,7 @@ function App() {
       <div className='w-full block'>
         <Header />
         <main>
-          {/*<Outlet />*/}
-          TODO
+          <Outlet />
         </main>
         <Footer />
       </div>

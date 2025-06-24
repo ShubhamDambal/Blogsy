@@ -17,13 +17,14 @@ function PostForm({post}) {
   })
 
   const navigate = useNavigate()
-  const userData = useSelector(state => state.user.userData)
+  const userData = useSelector((state) => state.auth.userData)
 
   //2 cases: user editing his form or newly creating
   const submit = async (data) => {
+    console.log("Form data:", data);
     //post already present
     if(post){
-      const file = data.image[0] ? appwriteService.uploadFile(data.image[0]) : null   //taking image from storage
+      const file = data.image?.[0] ? await appwriteService.uploadFile(data.image[0]) : null   //taking image from storage
 
       if(file){
         //delete prev post image from storage
@@ -108,13 +109,14 @@ function PostForm({post}) {
             label="Featured Image :"
             type="file"
             className="mb-4"
-            accept="image/png, image/jpg, image/jpeg, image/gif"
+            accept="image/png, image/jpg, image/jpeg, image/gif, image/jpeg"
             {...register("image", { required: !post })}
         />
-        {post && (
+        {post && post.featuredImage && (
             <div className="w-full mb-4">
+                {console.log("Image Preview URL", appwriteService.getFileView(post.featuredImage))}
                 <img
-                    src={appwriteService.getFilePreview(post.featuredImage)}
+                    src={appwriteService.getFileView(post.featuredImage)}
                     alt={post.title}
                     className="rounded-lg"
                 />
