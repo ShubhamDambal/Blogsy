@@ -1,13 +1,18 @@
 import React, {useEffect, useState} from 'react'
 import dbService from "../appwrite/database"
 import { Container, PostCard } from '../components'
+import { Query } from 'appwrite'
 
 function Home() {
   const [posts, setPosts] = useState([])
 
   useEffect(() => {
-    dbService.getPosts().then((posts) => {
-      if(posts){
+    dbService.getPosts([
+      Query.limit(2),
+      Query.orderDesc("$createdAt"), // show recent posts first
+      Query.equal("status", "active") // make sure only active posts are shown
+    ]).then((posts) => {
+      if (posts && posts.documents) {
         setPosts(posts.documents)
       }
     })
@@ -30,15 +35,15 @@ function Home() {
     )
   }
   return (
-    <div className='w-full py-8'>
+    <div className='w-full py-8'> 
       <Container>
         <div className='flex flex-wrap'>
-          {posts.map((post) => {
+          {posts.map((post) => (
             <div key={post.$id} className='p-2 w-1/4'>
               <PostCard {...post} />
               {/*need to destructure bcz we're getting arguments in this way*/}
             </div>
-          })}
+          ))}
         </div>
       </Container>
     </div>
