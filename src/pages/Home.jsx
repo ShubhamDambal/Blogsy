@@ -1,47 +1,71 @@
-import React, {useEffect, useState} from 'react'
-import dbService from "../appwrite/database"
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Container, PostCard } from '../components'
+import dbService from "../appwrite/database"
 import { Query } from 'appwrite'
+import {
+  fetchPostsStart,
+  fetchPostsSuccess,
+  fetchPostsFailure,
+} from '../store/postSlice'
 
 function Home() {
-  const [posts, setPosts] = useState([])
+  const dispatch = useDispatch()
+  const { posts, loading, error } = useSelector((state) => state.posts)
 
   useEffect(() => {
-    dbService.getPosts([
-      Query.limit(2),
-      Query.orderDesc("$createdAt"), // show recent posts first
-      Query.equal("status", "active") // make sure only active posts are shown
-    ]).then((posts) => {
-      if (posts && posts.documents) {
-        setPosts(posts.documents)
+    const fetchPosts = async () => {
+      dispatch(fetchPostsStart())
+
+      try {
+        const response = await dbService.getPosts([
+          Query.limit(2),
+          Query.orderDesc("$createdAt"),
+          Query.equal("status", "active")
+        ])
+
+        if (response && response.documents) {
+          dispatch(fetchPostsSuccess(response.documents))
+        } else {
+          dispatch(fetchPostsFailure("No posts found"))
+        }
+      } catch (err) {
+        dispatch(fetchPostsFailure(err.message))
       }
-    })
-  }, [])
+    }
 
+    fetchPosts()
+  }, [dispatch])
 
-  if(posts.length === 0){
+  if (loading) {
     return (
       <div className="w-full py-8 mt-4 text-center">
         <Container>
-          <div className="flex flex-wrap">
-            <div className="p-2 w-full">
-              <h1 className="text-2xl font-bold hover:text-gray-500">
-                  No posts
-              </h1>
-            </div>
-          </div>
+          <h1 className="text-xl font-medium">Loading...</h1>
         </Container>
       </div>
     )
   }
+
+  if (error || posts.length === 0) {
+    return (
+      <div className="w-full py-8 mt-4 text-center">
+        <Container>
+          <h1 className="text-2xl font-bold text-red-500 hover:text-gray-500">
+            {error || "No posts found"}
+          </h1>
+        </Container>
+      </div>
+    )
+  }
+
   return (
-    <div className='w-full py-8'> 
+    <div className='w-full py-8'>
       <Container>
         <div className='flex flex-wrap'>
           {posts.map((post) => (
             <div key={post.$id} className='p-2 w-1/4'>
               <PostCard {...post} />
-              {/*need to destructure bcz we're getting arguments in this way*/}
             </div>
           ))}
         </div>
