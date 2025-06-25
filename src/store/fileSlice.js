@@ -30,11 +30,6 @@ const fileSlice = createSlice({
     uploadFileFailure: (state, action) => {
       state.loading = false;
       state.error = action.payload;  // Set error
-    },
-
-    // Clear all files (optional use case)
-    clearFiles: (state) => {
-      state.files = [];
     }
   },
 });

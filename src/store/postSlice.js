@@ -30,11 +30,6 @@ const postSlice = createSlice({
     fetchPostsFailure: (state, action) => {
       state.loading = false;
       state.error = action.payload;  // Set error message
-    },
-
-    // Clear all posts (optional use case)
-    clearPosts: (state) => {
-      state.posts = [];
     }
   },
 });
