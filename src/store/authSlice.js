@@ -7,7 +7,7 @@ const initialState = {
   status: false,   //initially status is false(user logged out)
   userData: null   //and there is no user
 }
-
+ 
 const authSlice = createSlice({
   name: "auth",
   initialState,
