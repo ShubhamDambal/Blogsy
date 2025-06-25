@@ -48,7 +48,7 @@ function Post() {
     } else {
       navigate("/")
     }
-
+ 
   }, [slug, dispatch, navigate])
 
   const isAuthor = post && userData ? post.userId === userData.$id : false

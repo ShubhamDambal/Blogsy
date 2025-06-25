@@ -13,6 +13,7 @@ import Login from './pages/LoginPage.jsx'
 import EditPost from "./pages/EditPost";
 import Post from "./pages/Post";
 import AllPosts from "./pages/AllPosts";
+import InactivePosts from "./pages/InactivePosts.jsx";
 
 const router = createBrowserRouter([
   {
@@ -45,6 +46,15 @@ const router = createBrowserRouter([
           <AuthLayout authentication>
             {" "}
             <AllPosts />
+          </AuthLayout>
+        ),
+      },
+      {
+        path: "/inactive-posts",
+        element: (
+          <AuthLayout authentication>
+            {" "}
+            <InactivePosts />
           </AuthLayout>
         ),
       },
