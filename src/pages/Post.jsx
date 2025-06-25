@@ -1,44 +1,91 @@
-//this page is for how to render/show specific post on web page
-
-import React, {useEffect, useState} from 'react'
-import { Link, useNavigate, useParams } from "react-router-dom";
-import dbService from "../appwrite/database";
-import storageService from "../appwrite/storage";
-import { Button, Container } from "../components";
-import parse from "html-react-parser";
-import { useSelector } from "react-redux";
+import React, { useEffect } from 'react'
+import { Link, useNavigate, useParams } from "react-router-dom"
+import dbService from "../appwrite/database"
+import storageService from "../appwrite/storage"
+import { Button, Container } from "../components"
+import parse from "html-react-parser"
+import { useSelector, useDispatch } from "react-redux"
+import {
+  fetchPostsStart,
+  fetchPostsSuccess,
+  fetchPostsFailure,
+} from "../store/postSlice"
+import {
+  uploadFileFailure,
+} from "../store/fileSlice"
 
 function Post() {
-  const [post, setPost] = useState(null);
-  const { slug } = useParams();
-  const navigate = useNavigate();
+  const { slug } = useParams()
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
 
-  const userData = useSelector((state) => state.auth.userData);
+  const userData = useSelector((state) => state.auth.userData)
+  const posts = useSelector((state) => state.posts.posts)
+  const loading = useSelector((state) => state.posts.loading)
+  const error = useSelector((state) => state.posts.error)
+
+  const post = posts.find((p) => p.$id === slug) || null  //posts is an array cz, we storing it like this in slice
 
   useEffect(() => {
-    if (slug) {
-      dbService.getPost(slug).then((post) => {
-        if (post) setPost(post);
-        else navigate("/");
-      });
-    } 
-    else{
-      navigate("/");
-    } 
-  }, [slug, navigate]);
-
-  const isAuthor = post && userData ? post.userId === userData.$id : false;  //check user is author or not. If author then give access to delete & edit post
-
-  const deletePost = () => {
-    dbService.deletePost(post.$id).then((status) => {  //deletePost returns true if post gets deleted
-      if (status) {
-        storageService.deleteFile(post.featuredImage);  //if post deleted then remove corresponding image from storage
-        navigate("/");
+    const fetchPost = async () => {
+      dispatch(fetchPostsStart())
+      try {
+        const fetched = await dbService.getPost(slug)
+        if (fetched) {
+          dispatch(fetchPostsSuccess([fetched])) // overwrite or add to posts
+        } else {
+          dispatch(fetchPostsFailure("Post not found"))
+          navigate("/")
+        }
+      } catch (err) {
+        dispatch(fetchPostsFailure(err.message))
+        navigate("/")
       }
-    });
-  };
+    }
 
-  return post ? (
+    if (slug) {
+      fetchPost()
+    } else {
+      navigate("/")
+    }
+
+  }, [slug, dispatch, navigate])
+
+  const isAuthor = post && userData ? post.userId === userData.$id : false
+
+  const deletePost = async () => {
+    try {
+      const deleted = await dbService.deletePost(post.$id)
+      if (deleted) {
+        await storageService.deleteFile(post.featuredImage)
+        navigate("/")
+      }
+    } catch (err) {
+      dispatch(uploadFileFailure(err.message))
+    }
+  }
+
+  if (loading || !post) {
+    return (
+      <div className="w-full py-8 mt-4 text-center">
+        <Container>
+          <h1 className="text-xl font-medium">Loading...</h1>
+        </Container>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="w-full py-8 mt-4 text-center">
+        <Container>
+          <h1 className="text-xl font-bold text-red-500">{error}</h1>
+        </Container>
+      </div>
+    )
+  }
+
+  return (
     <div className='py-8'>
       <Container>
         <div className="w-full flex justify-center mb-4 relative border rounded-xl p-2">
@@ -66,11 +113,11 @@ function Post() {
           <h1 className="text-2xl font-bold">{post.title}</h1>
         </div>
         <div className="browser-css">
-          {parse(post.content)}  {/*Converts html to react. Bcz content is generated from Tinymce text editor*/}
+          {parse(post.content)}
         </div>
       </Container>
     </div>
-  ) : null;
+  )
 }
 
 export default Post

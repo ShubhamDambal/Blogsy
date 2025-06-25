@@ -19,7 +19,7 @@ const fileSlice = createSlice({
       state.loading = true;
       state.error = null;
     },
-
+ 
     // When upload is successful
     uploadFileSuccess: (state, action) => {
       state.loading = false;

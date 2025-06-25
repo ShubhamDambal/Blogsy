@@ -13,7 +13,7 @@ const postSlice = createSlice({
   name: 'posts',      // Unique name for this slice
   initialState,       // State defined above
   reducers: {         // Reducers to handle actions
-
+ 
     // When fetch starts
     fetchPostsStart: (state) => {
       state.loading = true;
