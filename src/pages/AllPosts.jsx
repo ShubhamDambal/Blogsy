@@ -7,7 +7,7 @@ import {
   fetchPostsSuccess,
   fetchPostsFailure
 } from '../store/postSlice'
-
+ 
 function AllPosts() {
   const dispatch = useDispatch()
 
@@ -18,7 +18,7 @@ function AllPosts() {
     dispatch(fetchPostsStart())
 
     try {
-      const response = await dbService.getPosts()
+      const response = await dbService.getPosts() //getPosts() without any argument then fetches all active posts
       if (response) {
         dispatch(fetchPostsSuccess(response.documents))
       } else {
@@ -33,6 +33,11 @@ function AllPosts() {
     fetchPosts()
   }, [dispatch])
 
+  // Show all user's active posts
+  const filteredPosts = posts.filter(
+    (post) => post.status === 'active'
+  )
+
   return (
     <div className='w-full py-8'>
       <Container>
@@ -40,7 +45,7 @@ function AllPosts() {
         {error && <p className="text-center text-red-500">{error}</p>}
         {!loading && !error && (
           <div className='flex flex-wrap'>
-            {posts.map((post) => (
+            {filteredPosts.map((post) => (
               <div key={post.$id} className='p-2 w-1/4'>
                 <PostCard {...post} />
               </div>

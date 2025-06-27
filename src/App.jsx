@@ -1,14 +1,14 @@
 import './App.css'
 import { useState, useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import authService from './appwrite/auth'
-import {login, logout} from './store/authSlice'
+import {login, logout, setLoading} from './store/authSlice'
 import { Footer, Header } from './components'
 import { Outlet } from 'react-router-dom'
 
 function App() {
   //create loading bcz some time need to fetch data fro appwrite
-  const [loading, setLoading] = useState(true)  //initially loading is true
+  const loading = useSelector((state) => state.auth.loading)
   const dispatch = useDispatch()  //getting current user from store
 
   //when app start using useEffect() we'll figure out user is logged in or not

@@ -2,6 +2,7 @@ import React from 'react'
 import { useDispatch } from 'react-redux'
 import authService from '../../appwrite/auth'
 import {logout} from '../../store/authSlice'
+import {clearPosts} from '../../store/postSlice'
 
 function LogoutBtn() {
   const dispatch = useDispatch();
@@ -9,6 +10,7 @@ function LogoutBtn() {
     //authService has logout as promise so we can use .then()
     authService.logout().then(() => {
       dispatch(logout());  //(authSlice has method logout())dispatch to store such that state should be up to date
+      dispatch(clearPosts()); //clear all posts from store when user logout such that on Home page no posts get rendered
     })
   }
 

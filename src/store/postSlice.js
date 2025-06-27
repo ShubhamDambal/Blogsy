@@ -30,6 +30,13 @@ const postSlice = createSlice({
     fetchPostsFailure: (state, action) => {
       state.loading = false;
       state.error = action.payload;  // Set error message
+    },
+    
+    //when needs to clear all posts from store
+    clearPosts: (state) => {
+      state.posts = []
+      state.loading = false
+      state.error = null
     }
   },
 });

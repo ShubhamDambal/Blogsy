@@ -19,7 +19,7 @@ function Home() {
 
       try {
         const response = await dbService.getPosts([
-          Query.limit(2),
+          Query.limit(3),
           Query.orderDesc("$createdAt"),
           Query.equal("status", "active")
         ])

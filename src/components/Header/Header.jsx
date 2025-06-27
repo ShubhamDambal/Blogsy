@@ -3,7 +3,6 @@ import { Container, Logo, LogoutBtn } from '../index'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import InactivePostsButton from './InactivePostsButton'
 
 function Header() { 
   const navigate = useNavigate()
@@ -37,6 +36,11 @@ function Header() {
       name: "Add post",
       slug: "/add-post",
       active: authStatus
+    },
+    {
+      name: "Inactive posts",
+      slug: "/inactive-posts",
+      active: authStatus
     }
   ]
 
@@ -60,8 +64,6 @@ function Header() {
                   </button>
                 </li>
               ) : null )}
-              
-              <InactivePostsButton />  {/*No need to conditionally render — the component will render nothing if isAuthor === false*/}
 
               {authStatus && (
                 <li>
