@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, useNavigate, useParams } from "react-router-dom"
 import dbService from "../appwrite/database"
 import storageService from "../appwrite/storage"
@@ -15,6 +15,7 @@ import {
 } from "../store/fileSlice"
 
 function Post() {
+  const [showModal, setShowModal] = useState(false);  //styling purpose
   const { slug } = useParams()
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -85,39 +86,83 @@ function Post() {
     )
   }
 
+  const imageUrl = storageService.getFileView(post.featuredImage);
   return (
-    <div className='py-8'>
+    <div className="py-8">
       <Container>
-        <div className="w-full flex justify-center mb-4 relative border rounded-xl p-2">
-          <img
-            src={storageService.getFileView(post.featuredImage)}
-            alt={post.title}
-            className="rounded-xl"
-          />
+        {/* Image Section */}
+        <div className="flex justify-center mb-8">
+          <div className="relative w-full max-w-3xl border rounded-xl overflow-hidden shadow-md bg-white">
+            <img
+              src={imageUrl}
+              alt={post.title}
+              className="cursor-pointer max-h-full max-w-full object-contain rounded-md"
+              onClick={() => setShowModal(true)}
+            />
 
-          {isAuthor && (
-            <div className="absolute right-6 top-6">
-              <Link to={`/edit-post/${post.$id}`}>
-                <Button bgColor="bg-green-500" className="mr-3">
-                  Edit
+            {isAuthor && (
+              <div className="absolute top-4 right-4 flex gap-2">
+                <Link to={`/edit-post/${post.$id}`}>
+                  <Button bgColor="bg-green-500" className="transition-all duration-200 hover:scale-105 hover:brightness-110">
+                    <span className="inline-flex items-center gap-1">
+                      Edit
+                    </span>
+                  </Button>
+                </Link>
+                <Button bgColor="bg-red-500" className="transition-all duration-200 hover:scale-105 hover:brightness-110" onClick={deletePost}>
+                  <span className="inline-flex items-center gap-1">
+                    Delete
+                  </span>
                 </Button>
-              </Link>
-              <Button bgColor="bg-red-500" onClick={deletePost}>
-                Delete
-              </Button>
-            </div>
-          )}
+              </div>
+            )}
+          </div>
         </div>
 
-        <div className="w-full mb-6">
-          <h1 className="text-2xl font-bold">{post.title}</h1>
+        {/* Title */}
+        <div className="max-w-3xl w-full mx-auto mb-6 text-center px-4">
+          <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 leading-tight">
+            {post.title}
+          </h1>
+          <p className="mt-2 text-gray-600 text-sm">Posted on {new Date(post.$createdAt).toDateString()}</p>
         </div>
-        <div className="browser-css">
+
+        {/* Content */}
+        <div className="max-w-3xl w-full mx-auto prose prose-lg prose-img:rounded-lg prose-headings:font-semibold prose-a:text-blue-600 hover:prose-a:underline px-4">
           {parse(post.content)}
         </div>
       </Container>
+
+      {/* Modal */}
+      {showModal && (
+        <div
+          className="fixed inset-0 z-50 bg-black bg-opacity-70 flex items-center justify-center p-4"
+          onClick={() => setShowModal(false)}
+        >
+          <div
+            className="relative w-full max-w-4xl max-h-[90vh] bg-white rounded-xl overflow-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close Button */}
+            <button
+              onClick={() => setShowModal(false)}
+              className="absolute top-3 right-3 z-50 bg-white text-black px-3 py-1 rounded-full font-semibold shadow hover:bg-gray-200"
+            >
+              ✕
+            </button>
+
+            {/* Image */}
+            <img
+              src={imageUrl}
+              alt={post.title}
+              className="w-full h-auto max-h-[80vh] object-contain rounded-xl"
+            />
+          </div>
+        </div>
+      )}
+
     </div>
-  )
+  );
 }
 
 export default Post

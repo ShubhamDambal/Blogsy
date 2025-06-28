@@ -9,24 +9,24 @@ const Input = React.forwardRef(function Input({
 
   const id = useId()  //for generating unique id's
   return (
-    <div className='w-full'>
-      {
-      label && 
-      <label 
-      className='inline-block mb-1 pl-1'
-      htmlFor={id}>
-        {label}
-      </label>
-      }
-      <input 
-      type={type} 
-      className={`${className}`}
-      ref={ref}   //gives reference to the parent component. So from this reference we get to know on which <input> to apply onClick(), etc events. Thus we've used forwardRef().
-      {...props}
-      id={id}
+    <div className='w-full mb-4'>
+      {label && (
+        <label
+          className='block text-sm font-medium text-gray-700 mb-1'
+          htmlFor={id}
+        >
+          {label}
+        </label>
+      )}
+      <input
+        type={type}
+        className={`block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-500 ${className}`}
+        ref={ref}
+        {...props}
+        id={id}
       />
     </div>
-  )
+  );
 })
 
 export default Input

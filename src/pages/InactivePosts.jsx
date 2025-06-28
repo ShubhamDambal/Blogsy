@@ -98,19 +98,19 @@ function InactivePosts() {
 
   // Final render
   return (
-    <div className="w-full py-8">
+    <div className="w-full py-8 px-5">
       <Container>
         {postsLoading && <p className="text-center">Loading posts...</p>}
         {error && <p className="text-center text-red-500">{error}</p>}
 
         {!postsLoading && !error && filteredPosts.length === 0 && (
-          <p className="text-center text-gray-600">No inactive posts to show.</p>
+          <p className="text-center text-gray-600">You have no inactive posts..</p>
         )}
 
         {!postsLoading && !error && filteredPosts.length > 0 && (
-          <div className="flex flex-wrap">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 px-4 max-w-7xl mx-auto">
             {filteredPosts.map((post) => (
-              <div key={post.$id} className="p-2 w-1/4">
+              <div key={post.$id} className="p-2">
                 <PostCard {...post} />
               </div>
             ))}

@@ -39,16 +39,14 @@ function AllPosts() {
   )
 
   return (
-    <div className='w-full py-8'>
+    <div className='py-8 px-5'>
       <Container>
         {loading && <p className="text-center">Loading...</p>}
         {error && <p className="text-center text-red-500">{error}</p>}
         {!loading && !error && (
-          <div className='flex flex-wrap'>
+          <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 px-4 max-w-7xl mx-auto'>
             {filteredPosts.map((post) => (
-              <div key={post.$id} className='p-2 w-1/4'>
-                <PostCard {...post} />
-              </div>
+              <PostCard key={post.$id} {...post} />
             ))}
           </div>
         )}
