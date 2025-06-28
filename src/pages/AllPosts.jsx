@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { Container, PostCard } from '../components'
 import dbService from "../appwrite/database"
+import { Query } from 'appwrite'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   fetchPostsStart,
@@ -18,7 +19,10 @@ function AllPosts() {
     dispatch(fetchPostsStart())
 
     try {
-      const response = await dbService.getPosts() //getPosts() without any argument then fetches all active posts
+      const response = await dbService.getPosts([
+        Query.orderDesc("$createdAt"),
+        Query.equal("status", "active")
+      ]) //getPosts() without any argument then fetches all active posts
       if (response) {
         dispatch(fetchPostsSuccess(response.documents))
       } else {

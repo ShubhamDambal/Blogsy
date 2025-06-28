@@ -13,7 +13,7 @@ function PostCard({ $id, title, featuredImage }) {
             className="max-h-full max-w-full object-contain rounded-md"
           />
         </div>
-        <h2 className="text-lg font-semibold text-center text-gray-800">
+        <h2 className="text-xl font-extrabold tracking-tight text-gray-900 leading-tight">
           {title}
         </h2>
       </div>

@@ -33,13 +33,13 @@ function Header() {
       active: authStatus
     },
     {
-      name: "Add post",
-      slug: "/add-post",
+      name: "Inactive posts",
+      slug: "/inactive-posts",
       active: authStatus
     },
     {
-      name: "Inactive posts",
-      slug: "/inactive-posts",
+      name: "Add post",
+      slug: "/add-post",
       active: authStatus
     }
   ]
@@ -51,7 +51,7 @@ function Header() {
           {/* Left: Logo */}
           <div className="mr-4">
             <Link to="/">
-              <Logo width="70px" />
+              <Logo />
             </Link>
           </div>
 

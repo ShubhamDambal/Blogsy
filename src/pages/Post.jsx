@@ -118,7 +118,7 @@ function Post() {
             )}
           </div>
         </div>
-
+ 
         {/* Title */}
         <div className="max-w-3xl w-full mx-auto mb-6 text-center px-4">
           <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 leading-tight">
