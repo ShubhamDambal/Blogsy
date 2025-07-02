@@ -9,7 +9,6 @@ function Protected({children, authentication = true}) {
 
   //protection conditions/mechanisms
   useEffect(() => {
-    //authentication = true(login required), authentication = false(already logged in no login required)
     if(authentication && authStatus !== authentication){  //
       navigate("/login")
     }
