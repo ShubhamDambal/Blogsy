@@ -41,7 +41,7 @@ function Home() {
     return (
       <div className="w-full py-8 mt-4 text-center">
         <Container>
-          <h1 className="text-xl font-medium">Loading...</h1>
+          <p>Loading...</p>
         </Container>
       </div>
     )

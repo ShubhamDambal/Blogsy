@@ -18,7 +18,7 @@ import {
   uploadFileSuccess,
   uploadFileFailure
 } from '../../store/fileSlice'
-
+ 
 function PostForm({ post }) {
   const { register, handleSubmit, watch, setValue, control, getValues } = useForm({
     defaultValues: {
