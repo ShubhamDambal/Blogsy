@@ -5,7 +5,6 @@ import { Client,  Databases, Query } from "appwrite";
 export class DBService{
   client = new Client();
   databases;
-  bucket;
 
   constructor(){
     this.client
